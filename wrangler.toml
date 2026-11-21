@@ -9,7 +9,7 @@ MODEL = "openai/gpt-4o"
 # Optional comma-separated backups tried if the main model fails, e.g. "vendor/model-a,vendor/model-b"
 FALLBACK_MODELS = ""
 # Comma-separated list of sites allowed to call this Worker. Replace with your real site origin(s).
-ALLOWED_ORIGINS = "https://pixelprotechsolutions.co.za,http://localhost:8080"
+ALLOWED_ORIGINS = "https://pixelprotechsolutions.co.za,https://pixelprotech-za.github.io,http://localhost:8080"
 MAX_TOKENS = "350"
 
 # The API key is NOT here. Set it as an encrypted secret:

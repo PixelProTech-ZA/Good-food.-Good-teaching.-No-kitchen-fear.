@@ -1,0 +1,3 @@
+# Copy to .dev.vars for local `wrangler dev` ONLY. .dev.vars is git-ignored.
+# Paste a NEW key here yourself. Never commit it, never paste it in chat.
+OPENROUTER_API_KEY=

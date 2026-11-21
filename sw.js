@@ -2,7 +2,7 @@
    It only handles same-origin GET requests. Calls to the Worker API (a different
    origin) are never touched, so questions and answers are never cached.
    Bump VERSION whenever you change any cached file. */
-const VERSION = "v1";
+const VERSION = "v2";
 const CACHE = "mom-sindy-" + VERSION;
 const SHELL = [
   "./",
