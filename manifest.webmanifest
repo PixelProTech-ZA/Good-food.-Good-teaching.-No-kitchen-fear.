@@ -1,0 +1,24 @@
+{
+  "id": "./",
+  "name": "Mom Sindy | PixelProTech Solutions",
+  "short_name": "Mom Sindy",
+  "description": "A friendly cooking companion that guides you one safe step at a time, with voice.",
+  "start_url": "./?source=pwa",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#07070a",
+  "theme_color": "#07070a",
+  "lang": "en-ZA",
+  "categories": ["food", "lifestyle", "education"],
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Pap & chakalaka", "short_name": "Pap", "url": "./?recipe=pap", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] },
+    { "name": "Beef stew & rice", "short_name": "Stew", "url": "./?recipe=stew", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] },
+    { "name": "Jollof-style rice", "short_name": "Jollof", "url": "./?recipe=jollof", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] }
+  ]
+}

@@ -1,0 +1,586 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07070a">
+<meta name="color-scheme" content="dark">
+<meta name="description" content="Mom Sindy is a friendly cooking companion that guides you one safe step at a time, with voice.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Mom Sindy">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Mom Sindy | PixelProTech Solutions</title>
+<style>
+:root{
+  --bg:#07070a;--panel:#1a1a22;--panel2:#1c1c26;
+  --teal:#00d4aa;--violet:#7b2fff;--gold:#d8b96a;
+  --text:#f1eefa;--text2:#c7c1da;--muted:#9a90b8;--dim:#524b6a;
+  --line:#2b2938;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(ellipse at 12% 0%,rgba(123,47,255,.16) 0,transparent 38%),radial-gradient(ellipse at 100% 20%,rgba(0,212,170,.09) 0,transparent 34%),var(--bg);color:var(--text);font:16px/1.55 var(--sans);min-height:100vh}
+button,input,select{font:inherit}
+button{cursor:pointer;border:1px solid var(--line);border-radius:10px;padding:11px 15px;background:var(--panel2);color:var(--text);font-weight:650;transition:border-color .15s,transform .15s}
+button:hover{border-color:var(--teal);transform:translateY(-1px)}
+button:disabled{opacity:.4;cursor:not-allowed;transform:none;border-color:var(--line)}
+button:focus-visible,input:focus-visible,select:focus-visible,.dish:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.primary{background:var(--teal);color:#04120e;border-color:var(--teal)}
+.primary:hover{border-color:var(--text)}
+.quiet{background:transparent}
+.app{max-width:1180px;margin:auto;padding:22px}
+.sys{font:700 .68rem/1 var(--mono);letter-spacing:.22em;color:var(--dim);text-transform:uppercase}
+.top{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:8px 0 22px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.brand{font:700 .72rem/1.4 var(--mono);letter-spacing:.2em;color:var(--teal);text-transform:uppercase}
+.brand strong{display:block;color:var(--text);font:800 1.2rem/1.2 var(--sans);letter-spacing:.06em}
+.tag{border:1px solid var(--violet);color:var(--text2);border-radius:99px;padding:6px 12px;font:700 .68rem/1 var(--mono);letter-spacing:.16em;text-transform:uppercase}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;padding:30px 0}
+.eyebrow{color:var(--teal);font:700 .72rem/1 var(--mono);letter-spacing:.2em;text-transform:uppercase}
+.hero h1{font-size:clamp(2.2rem,5vw,4.1rem);line-height:1.03;margin:14px 0;font-weight:800}
+.hero h1 span{color:var(--teal)}
+.hero p{color:var(--text2);max-width:600px}
+.hero-art{min-height:290px;background:linear-gradient(145deg,#1d1535,#12121a 58%,#0a0a10);border:1px solid var(--line);border-radius:22px;display:grid;place-items:center;overflow:hidden;position:relative}
+.hero-art:before,.hero-art:after{content:"";position:absolute;border:1px solid rgba(0,212,170,.18);border-radius:50%;width:270px;height:270px}
+.hero-art:after{width:350px;height:350px;border-color:rgba(123,47,255,.25)}
+.robot{position:relative;z-index:1;text-align:center;animation:bob 3s ease-in-out infinite}
+.robot .head{width:112px;height:120px;margin:auto;background:linear-gradient(145deg,#f1eefa,#9a90b8);border-radius:48% 48% 44% 44%;box-shadow:inset -10px -8px 18px rgba(26,26,34,.35),0 15px 35px rgba(0,0,0,.55);position:relative}
+.eyes{position:absolute;top:48px;left:22px;right:22px;display:flex;justify-content:space-between}
+.eyes i{width:13px;height:8px;border-radius:50%;background:#07070a;box-shadow:0 0 10px var(--teal)}
+.smile{position:absolute;bottom:24px;left:43px;width:26px;height:12px;border-bottom:2px solid #1a1a22;border-radius:50%}
+.bodybot{width:142px;height:105px;margin:-3px auto 0;background:linear-gradient(120deg,#c7c1da,#7b6fa0);border-radius:38px 38px 22px 22px;position:relative;border:5px solid #524b6a}
+.apron{position:absolute;left:38px;right:38px;top:24px;bottom:0;background:#1a1a22;border-radius:15px 15px 8px 8px;border-top:4px solid var(--teal)}
+.robot small{display:block;color:var(--teal);margin-top:12px;font:700 .72rem/1 var(--mono);letter-spacing:.2em}
+.speech{position:absolute;top:22px;right:18px;background:var(--text);color:#1a1a22;padding:9px 13px;border-radius:14px 14px 3px 14px;font-size:.83rem;max-width:160px;z-index:2}
+.grid{display:grid;grid-template-columns:1.05fr .95fr;gap:20px}
+.card{background:linear-gradient(150deg,var(--panel),#14141b);border:1px solid var(--line);border-radius:18px;padding:20px}
+.card h2,.card h3{margin:0 0 12px}
+.card h2{font-size:1.15rem}
+.muted{color:var(--muted)}
+.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.between{justify-content:space-between}
+.field{display:grid;gap:6px;margin:13px 0}
+.field label{color:var(--muted);font:700 .7rem/1.2 var(--mono);letter-spacing:.14em;text-transform:uppercase}
+.field select,.field input{background:#0d0d12;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:11px;width:100%}
+.dish{display:grid;grid-template-columns:76px 1fr;gap:14px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:14px;margin-top:10px;cursor:pointer;background:transparent;transition:border-color .15s}
+.dish:hover{border-color:var(--dim)}
+.dish.active{border-color:var(--teal);background:rgba(0,212,170,.06)}
+.dish .emoji{font-size:2.3rem;text-align:center;background:var(--panel2);border-radius:12px;padding:8px}
+.dish h3{font-size:1rem;margin:0}
+.dish p{font-size:.83rem;margin:3px 0 0;color:var(--muted)}
+.progress{height:6px;background:var(--panel2);border-radius:99px;overflow:hidden;margin:13px 0}
+.progress span{display:block;height:100%;background:linear-gradient(90deg,var(--teal),var(--violet));width:0;transition:width .25s}
+.stepnum{color:var(--teal);font:700 .72rem/1 var(--mono);letter-spacing:.18em}
+.step-title{font-size:1.4rem;margin:8px 0}
+.step-copy{color:var(--text2);min-height:68px}
+.tip{border-left:3px solid var(--gold);background:rgba(216,185,106,.07);padding:10px 12px;border-radius:0 10px 10px 0;color:var(--text2);font-size:.9rem;margin:12px 0}
+.note{border-left:3px solid var(--violet);background:rgba(123,47,255,.1);padding:10px 12px;border-radius:0 10px 10px 0;color:var(--text2);font-size:.9rem;margin:12px 0}
+.voicebar{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
+.status{font:.78rem/1.3 var(--mono);color:var(--teal);min-height:1.3em}
+.list{list-style:none;padding:0;margin:0}
+.list li{margin:4px 0}
+.list label{display:flex;gap:10px;align-items:flex-start;color:var(--text2);cursor:pointer;padding:5px 0}
+.list input{accent-color:var(--teal);margin-top:5px;width:16px;height:16px;flex:none}
+.list input:checked+span{color:var(--dim);text-decoration:line-through}
+.pill{font:700 .66rem/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--teal);border:1px solid rgba(0,212,170,.4);border-radius:99px;padding:5px 10px}
+.answer{color:var(--teal);margin-bottom:0}
+.hidden{display:none!important}
+.chat{max-height:280px;overflow:auto;display:grid;gap:8px;margin:12px 0;padding-right:4px}
+.msg{padding:9px 12px;border-radius:12px;font-size:.92rem;max-width:92%;line-height:1.45;overflow-wrap:anywhere}
+.msg.user{justify-self:end;background:rgba(123,47,255,.18);border:1px solid rgba(123,47,255,.4);color:var(--text)}
+.msg.sindy{justify-self:start;background:var(--panel2);border:1px solid var(--line);color:var(--text2)}
+.msg.pending{color:var(--muted);font-style:italic}
+.msg.sys{justify-self:center;font:.72rem/1.3 var(--mono);color:var(--muted);padding:2px 6px}
+.pill.ok{color:var(--teal);border-color:rgba(0,212,170,.4)}
+.pill.warn{color:var(--gold);border-color:rgba(216,185,106,.5)}
+.footer{padding:30px 0 10px;text-align:center;border-top:1px solid var(--line);margin-top:28px}
+.footer .sys{display:block;line-height:1.9}
+.footer a{color:var(--muted);text-decoration:none}
+.footer a:hover{color:var(--teal)}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+/* ---------- app feel (Android / PWA) ---------- */
+html{-webkit-text-size-adjust:100%;color-scheme:dark}
+body{-webkit-tap-highlight-color:transparent;overscroll-behavior-y:none;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+button{min-height:48px;touch-action:manipulation;-webkit-user-select:none;user-select:none}
+button:active{transform:scale(.97);filter:brightness(1.12)}
+.field select,.field input{min-height:48px;font-size:16px}
+.dish{min-height:72px}
+.dish:active{transform:scale(.99)}
+.top .row{gap:8px}
+@media(max-width:800px){
+  button{border-radius:999px;padding:12px 18px}
+  .card{border-radius:24px;padding:18px}
+  .dish{border-radius:18px}
+  .hero-art{border-radius:28px}
+  .navbar{position:sticky;bottom:10px;z-index:5;background:rgba(26,26,34,.92);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);padding:8px;border:1px solid var(--line);border-radius:999px;flex-wrap:nowrap}
+  .navbar button{flex:0 0 auto}
+  .navbar .primary{flex:1 1 auto}
+  .chat{max-height:42vh}
+}
+@media(display-mode:standalone){.tag{display:none}}
+@media(prefers-reduced-motion:reduce){.robot{animation:none}html{scroll-behavior:auto}button:hover,button:active{transform:none}}
+@media(max-width:800px){.hero,.grid{grid-template-columns:1fr}.hero-art{min-height:260px}.app{padding:15px}.hero{padding-top:20px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="brand"><strong>PIXELPROTECH SOLUTIONS</strong>Field IT Engineering &amp; Digital Systems</div>
+    <div class="row"><button class="quiet hidden" id="installBtn" type="button">⬇ Install app</button><div class="tag">Prototype · Mom Sindy</div></div>
+  </header>
+
+  <section class="hero">
+    <div>
+      <div class="eyebrow">// Your kitchen companion</div>
+      <h1>Good food.<br><span>Good teaching.</span><br>No kitchen fear.</h1>
+      <p>Mom Sindy guides you from choosing a meal to serving it. Pick a dish, prepare your ingredients, and cook one step at a time, with every step read aloud if your browser supports speech.</p>
+      <div class="row"><button class="primary" id="startBtn">Start cooking</button><button class="quiet" id="welcomeBtn">Meet Mom Sindy · voice</button></div>
+      <p class="muted" style="font-size:.84rem">No account needed. The lesson runs in your browser. Questions you ask Mom Sindy are sent to a PixelProTech server and an AI provider (OpenRouter) to be answered; if that is unavailable she uses built-in answers. Voice uses your browser's built-in speech features.</p>
+    </div>
+    <div class="hero-art" role="img" aria-label="Illustration of Mom Sindy, a friendly cooking robot in an apron">
+      <div class="speech" id="bubble" aria-live="polite">We'll take it one step at a time, my child.</div>
+      <div class="robot"><div class="head"><div class="eyes"><i></i><i></i></div><div class="smile"></div></div><div class="bodybot"><div class="apron"></div></div><small>MOM SINDY</small></div>
+    </div>
+  </section>
+
+  <section class="grid">
+    <div class="card">
+      <div class="row between"><h2>Choose today's lesson</h2><span class="pill">3 recipes</span></div>
+      <div class="dish active" role="button" tabindex="0" data-recipe="pap"><div class="emoji">🍲</div><div><h3>Pap &amp; chakalaka</h3><p>South African staple · beginner · about 45 min</p></div></div>
+      <div class="dish" role="button" tabindex="0" data-recipe="stew"><div class="emoji">🥘</div><div><h3>Beef stew &amp; rice</h3><p>Comforting home meal · beginner · about 90 min</p></div></div>
+      <div class="dish" role="button" tabindex="0" data-recipe="jollof"><div class="emoji">🍚</div><div><h3>Jollof-style rice</h3><p>West African-inspired · beginner · about 60 min</p></div></div>
+      <div class="field"><label for="servings">How many people are eating?</label>
+        <select id="servings"><option value="1">1 person</option><option value="2" selected>2 people</option><option value="4">4 people</option><option value="6">6 people</option></select></div>
+      <div class="field"><label for="kitchen">Your kitchen setup</label>
+        <select id="kitchen">
+          <option value="stove">Normal stove and pots</option>
+          <option value="hotplate">One hotplate and one pot</option>
+          <option value="gas">Gas stove</option>
+          <option value="micro">Microwave and kettle only</option>
+        </select></div>
+      <div class="note" id="kitchenNote" aria-live="polite"></div>
+      <button class="primary" style="width:100%" id="prepareBtn">Prepare my lesson</button>
+    </div>
+
+    <div class="card" id="lesson">
+      <div class="row between"><h2>Cook with Mom Sindy</h2><span class="pill" id="recipeLabel">Pap &amp; chakalaka</span></div>
+      <div class="stepnum" id="stepCount">STEP 1 OF 6</div>
+      <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressWrap"><span id="progressBar"></span></div>
+      <h3 class="step-title" id="stepTitle"></h3>
+      <p class="step-copy" id="stepText"></p>
+      <div class="tip" id="stepTip"></div>
+      <div class="row between"><span class="muted" id="stepTime"></span><span class="status" id="voiceStatus" aria-live="polite"></span></div>
+      <div class="voicebar">
+        <button class="primary" id="readBtn">🔊 Read step</button>
+        <button id="talkBtn">🎙️ Talk to Sindy</button>
+        <button id="stopBtn">⏹ Stop</button>
+      </div>
+      <div class="voicebar navbar" style="margin-top:12px">
+        <button id="backBtn">← Back</button>
+        <button class="primary" style="flex:1" id="nextBtn">I've done this · Next →</button>
+      </div>
+      <p class="muted" style="font-size:.8rem;margin-bottom:0">Voice commands: “next”, “repeat”, “back”, or ask a question such as “how do I know the pap is ready?”</p>
+    </div>
+  </section>
+
+  <section class="grid" style="margin-top:20px">
+    <div class="card">
+      <h2>Shopping &amp; preparation list</h2>
+      <p class="muted" style="margin-top:-5px">Amounts scale to the number of people you chose. They are starting estimates: adjust to appetite, and follow the packet ratio for maize meal and rice.</p>
+      <ul class="list" id="ingredients"></ul>
+    </div>
+    <div class="card">
+      <div class="row between"><h2>Ask Mom Sindy</h2><span class="pill warn" id="aiPill">AI: checking…</span></div>
+      <p class="muted" id="aiNote" style="margin-top:0"></p>
+      <div class="chat" id="chatlog" role="log" aria-live="polite" aria-label="Conversation with Mom Sindy"></div>
+      <div class="field"><label for="question">Your question</label><input id="question" placeholder="e.g. How do I know the pap is ready?" autocomplete="off" maxlength="500"></div>
+      <div class="row"><button class="primary" id="askBtn">Ask Sindy</button><button id="speakBtn">🎙️ Speak</button></div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <span class="sys">PixelProTech Solutions (Pty) Ltd · Reg 2026/622131/07</span>
+    <span class="sys"><a href="https://pixelprotechsolutions.co.za" target="_blank" rel="noopener">pixelprotechsolutions.co.za</a> · Johannesburg • Pretoria • Centurion • Gauteng</span>
+  </footer>
+</div>
+
+<script>
+"use strict";
+/* Ingredient quantities are per 2 people. q = number, u = unit, n = name.
+   u:"" means a countable item. */
+const recipes = {
+pap:{name:"Pap & chakalaka",
+ingredients:[
+ {q:1,u:"cup",n:"maize meal"},
+ {q:3,u:"cups",n:"water for soft pap (use less for stiff pap; follow the packet)"},
+ {q:1,u:"",n:"onion(s), chopped",c:1},
+ {q:2,u:"",n:"tomato(es), chopped",c:1},
+ {q:1,u:"",n:"carrot(s), grated",c:1},
+ {q:0.5,u:"",n:"green pepper(s), chopped",c:1},
+ {q:1,u:"tbsp",n:"cooking oil"},
+ {q:1,u:"tsp",n:"chakalaka spice or mild curry powder"},
+ {q:0,u:"",n:"salt, to taste"},
+ {q:0,u:"",n:"cooked beans (optional)"}],
+steps:[
+["Get your kitchen ready","Wash your hands, clear your work surface and gather your ingredients. Put a pot, spoon, chopping board and knife within reach.","Tie back long hair. Keep pan handles turned inward and use dry cloths for hot cookware.","Preparation · about 5 min"],
+["Prepare the vegetables","Peel and chop the onion. Chop the tomatoes and green pepper. Grate the carrot. Keep the vegetables separate and put the knife safely aside.","Use a stable chopping board and curl your fingertips away from the blade.","Preparation · about 8 min"],
+["Start the chakalaka","Warm the oil in a saucepan over medium heat. Add the onion and green pepper and stir until the onion softens, then add the carrot and tomatoes.","If the oil smokes, the pan is too hot. Lower the heat and stir so nothing catches.","Cooking · about 5–7 min"],
+["Simmer the chakalaka","Add the spice, a pinch of salt and a splash of water. Stir, cover partly and simmer until the vegetables are soft. Add cooked beans if you like.","Stir now and then and add small splashes of water if the pan dries out. Taste with a clean spoon.","Cooking · about 12–15 min"],
+["Cook the pap","Bring the water and a pinch of salt to a boil in a separate pot. Lower the heat. Sprinkle in the maize meal gradually while stirring firmly to prevent lumps. If the packet gives a different ratio, follow the packet.","Steam can burn. Keep your face and hands away from the pot opening, and never dump all the maize meal in at once.","Cooking · about 10–15 min"],
+["Check, serve and enjoy","Cover the pap and cook on low heat, stirring now and then, until it is cooked through with no raw maize-meal taste. Serve hot with the chakalaka.","Never leave a hot stove unattended. Refrigerate leftovers promptly in shallow containers; do not leave cooked food out for hours.","Finish · about 5 min"]]},
+
+stew:{name:"Beef stew & rice",
+ingredients:[
+ {q:350,u:"g",n:"beef stew pieces",r:25},
+ {q:1,u:"",n:"onion(s), chopped",c:1},
+ {q:2,u:"",n:"tomato(es), chopped (or 1 tbsp tomato paste each)",c:1},
+ {q:1,u:"",n:"carrot(s), sliced",c:1},
+ {q:1,u:"",n:"potato(es), cubed (optional)",c:1},
+ {q:1,u:"tbsp",n:"cooking oil"},
+ {q:2,u:"",n:"garlic clove(s), crushed",c:1},
+ {q:1,u:"tsp",n:"curry powder"},
+ {q:0,u:"",n:"salt and pepper, to taste"},
+ {q:1,u:"cup",n:"uncooked rice"},
+ {q:2,u:"cups",n:"water or unsalted stock for the stew, plus extra as needed"}],
+steps:[
+["Set up safely","Wash your hands and clear the counter. Gather the beef, vegetables, seasonings, rice, two pots and a chopping board.","Keep raw beef and its juices away from ready-to-eat food. Wash hands, knife and board after handling raw meat.","Preparation · about 5 min"],
+["Prepare ingredients","Chop the onion and tomatoes. Slice the carrot and cube the potato. Measure the rice. Keep the raw beef on its own plate.","Use a separate board for raw meat if you can. Do not wash raw meat: splashing spreads germs.","Preparation · about 10 min"],
+["Brown the beef","Heat the oil in a heavy pot over medium-high heat. Brown the beef in batches so the pot is not crowded, then move it to a clean plate.","Hot oil can splatter, so lower pieces in carefully. Do not put cooked meat back on the raw-meat plate.","Cooking · about 8–10 min"],
+["Build the stew","Lower the heat. Cook the onion until soft. Add garlic, tomato, curry powder and salt. Return the beef and add enough water or stock to partly cover it.","Scrape the bottom gently. Add a little water if the pot is drying out.","Cooking · about 5 min"],
+["Simmer until tender","Cover and simmer gently, stirring from time to time. Add the carrot and potato partway through. Continue until the beef is tender.","Timing depends on the cut and the size of the pieces; tougher cuts can need 60–90 minutes or more. If you use a food thermometer, whole pieces of beef should reach at least 63°C with a 3-minute rest.","Cooking · about 45–75 min"],
+["Cook rice and serve","Rinse the rice if you like. Cook it using the water ratio on the packet. Fluff with a fork and serve with the hot stew.","Keep raw-meat utensils away from the cooked rice. Refrigerate leftovers promptly and reheat until steaming hot.","Finish · about 15 min"]]},
+
+jollof:{name:"Jollof-style rice",
+ingredients:[
+ {q:1,u:"cup",n:"long-grain rice"},
+ {q:2,u:"",n:"tomato(es)",c:1},
+ {q:0.5,u:"",n:"red bell pepper(s)",c:1},
+ {q:1,u:"",n:"onion(s) (about half goes into the blend, the rest is chopped)",c:1},
+ {q:1,u:"tbsp",n:"tomato paste"},
+ {q:2,u:"tbsp",n:"cooking oil"},
+ {q:1,u:"tsp",n:"curry powder"},
+ {q:0.5,u:"tsp",n:"dried thyme"},
+ {q:2,u:"",n:"garlic clove(s), crushed",c:1},
+ {q:0,u:"",n:"ginger and salt, to taste"},
+ {q:1.5,u:"cups",n:"stock or water (check the rice packet and adjust)"}],
+steps:[
+["Get ready","Wash your hands, clear the counter and gather a pot with a lid, a blender or grater, a spoon and your ingredients.","Keep the lid and handles safely positioned. Be careful with blades when blending.","Preparation · about 5 min"],
+["Make the pepper base","Blend or finely grate the tomatoes, bell pepper and about half of the onion. Keep the mixture smooth but not watery.","If you use a blender, secure the lid and never put a hand inside while the blades move.","Preparation · about 8 min"],
+["Cook the base","Heat the oil over medium heat. Soften the remaining chopped onion. Stir in the tomato paste, then add the blended mixture.","Cook gently and stir to prevent splashing. Lower the heat if it spits.","Cooking · about 10–15 min"],
+["Season it","Add garlic, ginger, thyme, curry powder and salt. Simmer until the sauce thickens and the raw tomato smell is gone.","Taste with a clean spoon. You can always add more seasoning later.","Cooking · about 8–10 min"],
+["Add rice and liquid","Rinse and drain the rice. Stir it into the sauce. Add the stock or water, using the rice packet as your guide.","Too much liquid makes the rice mushy. You can add a little hot water later if needed.","Cooking · about 3 min"],
+["Steam, check and serve","Cover and cook on low heat, checking occasionally and gently turning the rice so it cooks evenly. Add small splashes of hot water if it dries out. Serve once the rice is tender all the way through.","Do not leave the stove unattended. Cooking time and liquid vary by rice type and pot. Let the rice rest briefly before serving.","Finish · about 15–25 min"]]}
+};
+
+const kitchenNotes = {
+ stove:"",
+ hotplate:"One hotplate, one pot: cook the parts of the recipe one after another, not together. Keep the finished part covered in its pot or a lidded dish while you use the pot for the next part. Wash the pot between parts.",
+ gas:"Gas stove: if you smell gas, turn off the knobs, open windows and do not light anything. Keep the flame under the pot, not licking up the sides, and keep cloths and sleeves away from it.",
+ micro:"These recipes need a stove or hotplate with a pot. A microwave and kettle alone cannot safely brown, simmer or cook them, so Mom Sindy will not pretend otherwise. If you only have those, boil water in the kettle and use it to cook instant oats or noodles instead."
+};
+
+const substitutes = [
+ [/tomato paste/, "If you have fresh tomatoes, use about 2 chopped tomatoes per tablespoon of paste and simmer a little longer so the extra water cooks off."],
+ [/fresh tomato|tomatoes/, "No fresh tomatoes? Use 1 tablespoon of tomato paste per tomato, mixed with a splash of water."],
+ [/stock/, "No stock? Plain water works. Add a little more salt and seasoning to make up for the flavour."],
+ [/curry|chakalaka|spice/, "Mild curry powder and chakalaka spice can stand in for each other. Start with half the amount and taste, because strength varies by brand."],
+ [/green pepper|bell pepper|peppers?/, "Green and red peppers can replace each other. If you have neither, leave it out; the dish will still work."],
+ [/garlic/, "No garlic? Leave it out, or use a little extra onion."],
+ [/onion/, "Onion gives the base flavour. If you have none, leave it out and add a little extra spice, tasting as you go."],
+ [/maize|mealie|pap/, "Maize meal has no safe substitute for pap. Use the ratio on your packet."],
+ [/rice/, "Long-grain white rice works best here. Other rice needs different water and time, so follow its packet."],
+ [/oil/, "Any plain cooking oil works. Sunflower oil is common."]
+];
+
+const $ = id => document.getElementById(id);
+let selected = "pap", step = 0;
+
+/* ---------- formatting ---------- */
+function fmtNum(x){
+  const w = Math.floor(x), f = Math.round((x - w) * 4) / 4;
+  const frac = {0:"",0.25:"¼",0.5:"½",0.75:"¾",1:""}[f];
+  const whole = f === 1 ? w + 1 : w;
+  if (whole === 0 && frac) return frac;
+  return String(whole) + (frac || "");
+}
+function scaleIngredient(i, people){
+  if (!i.q) return i.n;
+  let q = i.q * people / 2;
+  if (i.r) q = Math.max(i.r, Math.round(q / i.r) * i.r);
+  else if (i.c) q = Math.max(0.5, Math.round(q * 2) / 2);
+  const num = i.r ? String(q) : fmtNum(q);
+  let unit = i.u;
+  if (unit === "cup" || unit === "cups") unit = q > 1 ? "cups" : "cup";
+  const name = i.n.replace(/\((e?s)\)/g, q > 1 ? "$1" : "");
+  return `${num}${unit ? " " + unit : ""} ${name}`.replace(/\s+/g, " ").trim();
+}
+
+/* ---------- rendering ---------- */
+function renderIngredients(){
+  const people = Number($("servings").value);
+  $("ingredients").innerHTML = recipes[selected].ingredients
+    .map(i => `<li><label><input type="checkbox"><span>${scaleIngredient(i, people)}</span></label></li>`).join("");
+}
+function renderKitchen(){
+  const n = kitchenNotes[$("kitchen").value];
+  $("kitchenNote").textContent = n;
+  $("kitchenNote").classList.toggle("hidden", !n);
+}
+function render(){
+  const r = recipes[selected], s = r.steps[step], last = step === r.steps.length - 1;
+  $("recipeLabel").textContent = r.name;
+  $("stepCount").textContent = `STEP ${step + 1} OF ${r.steps.length}`;
+  $("stepTitle").textContent = s[0];
+  $("stepText").textContent = s[1];
+  $("stepTip").textContent = "Safety tip: " + s[2];
+  $("stepTime").textContent = s[3];
+  const pct = Math.round((step + 1) / r.steps.length * 100);
+  $("progressBar").style.width = pct + "%";
+  $("progressWrap").setAttribute("aria-valuenow", pct);
+  $("backBtn").disabled = step === 0;
+  $("nextBtn").textContent = last ? "Finish lesson ✓" : "I've done this · Next →";
+  $("bubble").textContent = last ? "Look at you! Let's finish strong." : "One step at a time, my child.";
+  renderIngredients();
+}
+function chooseRecipe(id){
+  selected = id; step = 0;
+  document.querySelectorAll(".dish").forEach(x => x.classList.toggle("active", x.dataset.recipe === id));
+  render();
+}
+
+/* ---------- speech ---------- */
+const hasTTS = "speechSynthesis" in window && "SpeechSynthesisUtterance" in window;
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+function setStatus(t){ $("voiceStatus").textContent = t; }
+function say(text){
+  if (!hasTTS){ setStatus("Speech output is not supported in this browser."); return; }
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.rate = 0.92; u.lang = "en-ZA";
+  u.onstart = () => setStatus("Mom Sindy is speaking…");
+  u.onend = () => setStatus("Ready when you are.");
+  u.onerror = e => { if (e.error !== "interrupted" && e.error !== "canceled") setStatus("Speech could not play in this browser."); };
+  speechSynthesis.speak(u);
+}
+function stopSpeech(){ if (hasTTS) speechSynthesis.cancel(); setStatus("Stopped."); }
+function speakCurrent(){ const s = recipes[selected].steps[step]; say(`${s[0]}. ${s[1]} Safety tip. ${s[2]}`); }
+
+/* ---------- navigation ---------- */
+function nextStep(){
+  if (step < recipes[selected].steps.length - 1){ step++; render(); speakCurrent(); }
+  else { const m = "You have completed this lesson. Well done, my child. Let the food cool a little and enjoy your meal."; $("bubble").textContent = "You did it! Proud of you."; addMsg("sindy", m); say(m); }
+}
+function previousStep(){ if (step > 0){ step--; render(); speakCurrent(); } }
+function startCooking(){ $("lesson").scrollIntoView({behavior:"smooth"}); speakCurrent(); }
+
+/* ---------- Ask Sindy ---------- */
+/* A command only counts if the whole utterance is a command, so questions
+   like "what do I need next?" are answered, not treated as "next". */
+function parseCommand(text){
+  const t = text.toLowerCase().replace(/[^a-z\s]/g, "").replace(/\s+/g, " ").trim();
+  if (/^(next|next step|done|i am done|im done|i have done this|continue)$/.test(t)) return "next";
+  if (/^(repeat|repeat that|again|say that again|read it again|read step)$/.test(t)) return "repeat";
+  if (/^(back|go back|previous|previous step)$/.test(t)) return "back";
+  return null;
+}
+function answerQuestion(q){
+  const t = q.toLowerCase();
+  if (/(pap|porridge).*(ready|done|cooked)|(ready|done|cooked).*(pap|porridge)/.test(t))
+    return "Pap is ready when it is cooked through, with no raw or dry maize-meal taste, and it holds together on the spoon. Keep it on low heat, covered, and stir now and then until the texture suits you.";
+  if (/rice.*(ready|done|cooked)|(ready|done|cooked).*rice/.test(t))
+    return "Taste a few grains. Rice is ready when it is tender all the way through with no hard centre. If it is still firm and the pot is dry, add a small splash of hot water, cover and cook a little longer.";
+  if (/(beef|meat|stew).*(ready|done|cooked|tender)|(ready|done|cooked|tender).*(beef|meat|stew)/.test(t))
+    return "Stew beef is ready when a piece is tender enough to cut easily with a spoon. Tougher cuts can take 60 to 90 minutes or more of gentle simmering. If you use a thermometer, whole pieces of beef should reach at least 63 degrees Celsius with a 3-minute rest.";
+  if (/lump/.test(t))
+    return "To avoid lumps in pap, sprinkle the maize meal in gradually and stir firmly the whole time. If lumps form, press them against the side of the pot with the back of the spoon while stirring.";
+  if (/burn|burnt|smok|catch(ing)? fire|fire|too hot/.test(t))
+    return "Turn the heat down or off if it is safe to do so, and move back from the smoke. Never pour water on burning oil. If a pan catches fire, turn off the heat if you safely can and cover the pan with a metal lid. If it spreads, leave and call the emergency services.";
+  if (/temperature|thermometer|safe to eat|undercook/.test(t))
+    return "Whole pieces of beef should reach at least 63 degrees Celsius with a 3-minute rest, and minced beef 71 degrees. Cook rice and pap until fully tender, and reheat leftovers until steaming hot.";
+  if (/leftover|store|fridge|refrigerat/.test(t))
+    return "Refrigerate leftovers promptly in shallow containers rather than leaving them out for hours. Reheat until steaming hot all the way through.";
+  if (/substitut|replace|instead|don'?t have|do not have|no\s+\w+|without|run out|missing/.test(t)){
+    for (const [re, a] of substitutes) if (re.test(t)) return a;
+    return "Tell me which ingredient is missing, for example tomato paste, stock, garlic, onion or curry powder, and I will tell you what I know.";
+  }
+  if (/ingredient|shopping|what do i need|what must i buy/.test(t))
+    return "Your shopping and preparation list is in the card on the left, scaled to the number of people you chose. Tick items off as you gather them.";
+  return "I don't have an answer for that in this version. Follow the current step, check the ingredient list, and use the safety tip. You can ask me about doneness, burning, leftovers, temperatures or substitutes.";
+}
+/* ---------- AI connection ----------
+   API_BASE is the public address of YOUR Cloudflare Worker, e.g.
+   "https://mom-sindy-api.your-subdomain.workers.dev". It is not a secret.
+   The OpenRouter key lives only inside the Worker. Leave empty to use the
+   built-in answers only. */
+const API_BASE = "";
+const AI_STATES = {
+  checking:     ["AI: checking…", "warn", "Connecting to Mom Sindy's AI…"],
+  online:       ["AI: ready", "ok", "Mom Sindy's AI is connected. Ask her anything about this lesson, even mid-step. Your progress stays where it is."],
+  offline:      ["AI: offline", "warn", "The AI could not be reached, so Mom Sindy is using her built-in answers. Your lesson is not affected."],
+  unconfigured: ["AI: not connected", "warn", "Mom Sindy is using her built-in answers (doneness, safety, burning, leftovers, substitutes). The AI connection has not been set up yet."]
+};
+let aiState = API_BASE ? "checking" : "unconfigured";
+let busy = false;
+const history = []; /* conversation memory: kept in this page only, never stored */
+
+function apiUrl(path){ return API_BASE.replace(/\/+$/, "") + path; }
+function setAi(state){
+  aiState = state;
+  const [label, cls, note] = AI_STATES[state];
+  $("aiPill").textContent = label;
+  $("aiPill").className = "pill " + cls;
+  $("aiNote").textContent = note;
+}
+async function checkAI(){
+  if (!API_BASE){ setAi("unconfigured"); return; }
+  setAi("checking");
+  const ctrl = new AbortController(), t = setTimeout(() => ctrl.abort(), 8000);
+  try {
+    const r = await fetch(apiUrl("/health"), { signal: ctrl.signal });
+    const d = await r.json();
+    setAi(d && d.ok && d.configured ? "online" : "offline");
+  } catch { setAi("offline"); }
+  finally { clearTimeout(t); }
+}
+
+function addMsg(kind, text){
+  const d = document.createElement("div");
+  d.className = "msg " + kind;
+  d.textContent = text; /* textContent only: AI text is never treated as HTML */
+  const log = $("chatlog");
+  log.appendChild(d);
+  log.scrollTop = log.scrollHeight;
+  return d;
+}
+
+function buildContext(){
+  const r = recipes[selected], s = r.steps[step], people = Number($("servings").value);
+  return {
+    recipe: r.name,
+    stepIndex: step,
+    steps: r.steps.map(x => x[0]),
+    stepText: s[1],
+    stepTip: s[2],
+    servings: people,
+    kitchen: $("kitchen").selectedOptions[0].textContent,
+    ingredients: r.ingredients.map(i => scaleIngredient(i, people))
+  };
+}
+async function askAI(text){
+  const ctrl = new AbortController(), t = setTimeout(() => ctrl.abort(), 25000);
+  try {
+    const res = await fetch(apiUrl("/chat"), {
+      method: "POST", signal: ctrl.signal,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: text, context: buildContext(), history: history.slice(-10) })
+    });
+    let data = null;
+    try { data = await res.json(); } catch {}
+    if (!res.ok || !data || !data.ok || !data.reply) throw new Error((data && data.error) || ("http_" + res.status));
+    return data.reply;
+  } finally { clearTimeout(t); }
+}
+
+async function respond(text, speak){
+  const cmd = parseCommand(text);
+  if (cmd){
+    addMsg("user", text);
+    if (cmd === "next"){ addMsg("sindy", "Let's move to the next step."); nextStep(); }
+    else if (cmd === "back"){ addMsg("sindy", "Let's go back one step."); previousStep(); }
+    else { addMsg("sindy", "Of course. I'll repeat the current step."); speakCurrent(); }
+    return;
+  }
+  if (busy) return;
+  addMsg("user", text);
+  $("question").value = "";
+
+  let reply = "", usedAI = false;
+  if (API_BASE && aiState !== "unconfigured"){
+    if (navigator.onLine === false){ setAi("offline"); }
+    else {
+      busy = true; $("askBtn").disabled = true;
+      const pending = addMsg("sindy", "Mom Sindy is thinking…");
+      pending.classList.add("pending");
+      try { reply = await askAI(text); usedAI = true; setAi("online"); }
+      catch { setAi("offline"); }
+      pending.remove(); busy = false; $("askBtn").disabled = false;
+    }
+  }
+  if (!usedAI){
+    reply = answerQuestion(text);
+    if (API_BASE) addMsg("sys", "AI unavailable, so this is a built-in answer.");
+  }
+  addMsg("sindy", reply);
+  history.push({ role: "user", content: text }, { role: "assistant", content: reply });
+  if (history.length > 20) history.splice(0, history.length - 20);
+  $("bubble").textContent = "Let's figure it out together.";
+  if (speak) say(reply);
+}
+function askSindy(){
+  const q = $("question").value.trim();
+  if (!q){ addMsg("sys", "Type a question first, my child."); return; }
+  respond(q, true);
+}
+function listen(cb){
+  if (!SR){ setStatus("Voice input is not available in this browser. Type your question instead."); return; }
+  const rec = new SR();
+  rec.lang = "en-ZA"; rec.interimResults = false; rec.maxAlternatives = 1;
+  setStatus("Listening…");
+  rec.onresult = e => { const t = e.results[0][0].transcript; setStatus("Heard: " + t); cb(t); };
+  rec.onerror = e => setStatus(e.error === "not-allowed" ? "Microphone permission was denied." : "I couldn't hear that. Please try again or type it.");
+  try { rec.start(); } catch (err) { setStatus("Voice input could not start. Try again."); }
+}
+
+/* ---------- wiring ---------- */
+document.querySelectorAll(".dish").forEach(d => {
+  d.addEventListener("click", () => chooseRecipe(d.dataset.recipe));
+  d.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); chooseRecipe(d.dataset.recipe); } });
+});
+$("servings").addEventListener("change", renderIngredients);
+$("kitchen").addEventListener("change", renderKitchen);
+$("startBtn").addEventListener("click", startCooking);
+$("prepareBtn").addEventListener("click", () => { step = 0; render(); startCooking(); });
+$("welcomeBtn").addEventListener("click", () => say("Hello my child, I'm Mom Sindy. Choose a meal and I'll guide you from preparation to serving. We will take it one safe step at a time."));
+$("readBtn").addEventListener("click", speakCurrent);
+$("stopBtn").addEventListener("click", stopSpeech);
+$("talkBtn").addEventListener("click", () => listen(t => { $("question").value = t; respond(t, true); }));
+$("speakBtn").addEventListener("click", () => listen(t => { $("question").value = t; respond(t, true); }));
+$("backBtn").addEventListener("click", previousStep);
+$("nextBtn").addEventListener("click", nextStep);
+$("askBtn").addEventListener("click", askSindy);
+$("question").addEventListener("keydown", e => { if (e.key === "Enter") askSindy(); });
+
+setStatus(hasTTS ? (SR ? "Voice output and input available." : "Voice output available. Voice input is not supported here.") : "Voice is not supported in this browser. Text works fully.");
+if (!hasTTS){ $("readBtn").disabled = true; $("stopBtn").disabled = true; $("welcomeBtn").disabled = true; }
+if (!SR){ $("talkBtn").disabled = true; $("speakBtn").disabled = true; }
+window.addEventListener("online", checkAI);
+window.addEventListener("offline", () => { if (API_BASE) setAi("offline"); });
+addMsg("sindy", "Ask me about this lesson, my child: doneness, safety, burning, leftovers or substitutes.");
+renderKitchen();
+render();
+checkAI();
+
+/* ---------- PWA: install + offline ---------- */
+if ("serviceWorker" in navigator && location.protocol !== "file:"){
+  window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+}
+let deferredInstall = null;
+window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); deferredInstall = e; $("installBtn").classList.remove("hidden"); });
+window.addEventListener("appinstalled", () => { deferredInstall = null; $("installBtn").classList.add("hidden"); });
+$("installBtn").addEventListener("click", async () => {
+  if (!deferredInstall) return;
+  deferredInstall.prompt();
+  try { await deferredInstall.userChoice; } catch {}
+  deferredInstall = null; $("installBtn").classList.add("hidden");
+});
+/* Home-screen shortcuts open a recipe directly: ?recipe=pap | stew | jollof */
+const qRecipe = new URLSearchParams(location.search).get("recipe");
+if (qRecipe && recipes[qRecipe]) chooseRecipe(qRecipe);
+</script>
+</body>
+</html>

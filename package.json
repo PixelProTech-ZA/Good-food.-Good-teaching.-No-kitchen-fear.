@@ -1,0 +1,15 @@
+{
+  "name": "mom-sindy-api",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node worker.test.mjs",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "live-test": "node live-test.mjs"
+  },
+  "devDependencies": {
+    "wrangler": "^4"
+  }
+}
